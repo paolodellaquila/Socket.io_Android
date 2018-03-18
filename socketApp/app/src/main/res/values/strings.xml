@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">SocketChat</string>
+
+    <string name="app_name">SocketApp Fermi</string>
+    <string name="action_leave">Abbandona</string>
+    <string name="action_send">Inviato</string>
+    <string name="prompt_message">Messagio</string>
+
+    <string name="connect">Connesso</string>
+    <string name="disconnect">Disconesso! Controlla la tua connessione internet</string>
+    <string name="error_connect">Connessione fallita</string>
+
+    <!-- messages -->
+    <string name="message_welcome">Benvenuto nella Socket Chat Fermi–</string>
+    <plurals name="message_participants">
+        <item quantity="one">C\' è %d partecipante</item>
+        <item quantity="other">Ci sono %d participanti</item>
+    </plurals>
+    <string name="message_user_joined">%s si è connesso</string>
+    <string name="message_user_left">%s ha abbandonato</string>
+    <string name="user_action_typing">sta scrivendo</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Qual\'è il tuo nickname?</string>
+    <string name="prompt_password">Qual\'è la tua password?</string>
+
+    <string name="action_sign_in">Login</string>
+    <string name="action_sign_in_short">Login</string>
+
+    <string name="error_field_required">Questo campo è obbligatorio</string>
+
 </resources>
