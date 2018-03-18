@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Socket mSocket;
 
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,15 @@ public class LoginActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
+        //initialize progress dialog
+        progressDialog = new ProgressDialog(this);
+
+        // Setting Title
+        progressDialog.setTitle("SocketChat");
+
+        // Setting Message
+        progressDialog.setMessage("Caricamento...");
+
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username_input);
         mPasswordView = (EditText) findViewById(R.id.username_password);
@@ -55,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     if(mPasswordView.getText().toString().equals("Fermi123")){
+                        progressDialog.show();
+                        
                         attemptLogin();
                         return true;
                     }else{
@@ -70,7 +82,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(mPasswordView.getText().toString().equals("Fermi123")){
+                    progressDialog.show();
+
                     attemptLogin();
+                }else{
+                    Toast.makeText(LoginActivity.this, "Password Errata", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -91,16 +107,6 @@ public class LoginActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-
-        ProgressDialog progressDialog = new ProgressDialog(this);
-
-        // Setting Title
-        progressDialog.setTitle("SocketChat");
-
-        // Setting Message
-        progressDialog.setMessage("Caricamento...");
-
-        progressDialog.show();
 
         // Reset errors.
         mUsernameView.setError(null);
