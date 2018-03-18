@@ -1,6 +1,7 @@
 package com.example.francescopaolodellaquila.socketchat;
 
 import android.content.Intent;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,9 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,7 +36,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //set socket
+        //initialize socket
+        try {
+            mSocket = IO.socket("");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username_input);
