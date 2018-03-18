@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //initialize socket
         try {
-            mSocket = IO.socket("https://socket-io-chat.now.sh/");
+            mSocket = IO.socket("http://e329aa1f.ngrok.io");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     if(mPasswordView.getText().toString().equals("Fermi123")){
                         progressDialog.show();
-                        
+
                         attemptLogin();
                         return true;
                     }else{
@@ -107,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-
         // Reset errors.
         mUsernameView.setError(null);
 
@@ -127,8 +126,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // perform the user login attempt.
         mSocket.emit("add user", username);
-
-        progressDialog.dismiss();
     }
 
     private Emitter.Listener onLogin = new Emitter.Listener() {

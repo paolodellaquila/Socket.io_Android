@@ -85,7 +85,7 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
         //initialize socket
         try {
-            mSocket = IO.socket("https://socket-io-chat.now.sh/");
+            mSocket = IO.socket("http://e329aa1f.ngrok.io");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -94,13 +94,12 @@ public class MainFragment extends Fragment {
         mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on("nuovo messaggio", onNewMessage);
-        mSocket.on("utente connesso", onUserJoined);
-        mSocket.on("utente disconesso", onUserLeft);
-        mSocket.on("sta scrivendo", onTyping);
-        mSocket.on("ha smesso di scrivere", onStopTyping);
+        mSocket.on("new message", onNewMessage);
+        mSocket.on("user joined", onUserJoined);
+        mSocket.on("user left", onUserLeft);
+        mSocket.on("typing", onTyping);
+        mSocket.on("stop typing", onStopTyping);
         mSocket.connect();
-
         startSignIn();
     }
 
@@ -158,7 +157,7 @@ public class MainFragment extends Fragment {
 
                 if (!mTyping) {
                     mTyping = true;
-                    mSocket.emit("sta scrivendo");
+                    mSocket.emit("typing");
                 }
 
                 mTypingHandler.removeCallbacks(onTypingTimeout);
@@ -188,7 +187,7 @@ public class MainFragment extends Fragment {
         }
 
         mUsername = data.getStringExtra("username");
-        int numUsers = data.getIntExtra("numero di utenti", 1);
+        int numUsers = data.getIntExtra("numUsers", 1);
 
         addLog(getResources().getString(R.string.message_welcome));
         addParticipantsLog(numUsers);
@@ -267,7 +266,7 @@ public class MainFragment extends Fragment {
         addMessage(mUsername, message);
 
         // perform the sending message attempt.
-        mSocket.emit("nuovo messaggio", message);
+        mSocket.emit("new message", message);
     }
 
     private void startSignIn() {
@@ -295,7 +294,7 @@ public class MainFragment extends Fragment {
                 public void run() {
                     if(!isConnected) {
                         if(null!=mUsername)
-                            mSocket.emit("aggiungi utente", mUsername);
+                            mSocket.emit("add user", mUsername);
                         Toast.makeText(getActivity().getApplicationContext(),
                                 R.string.connect, Toast.LENGTH_LONG).show();
                         isConnected = true;
@@ -311,7 +310,7 @@ public class MainFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i(TAG, "disconesso");
+                    Log.i(TAG, "diconnected");
                     isConnected = false;
                     Toast.makeText(getActivity().getApplicationContext(),
                             R.string.disconnect, Toast.LENGTH_LONG).show();
@@ -326,7 +325,7 @@ public class MainFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e(TAG, "Errore di connessione");
+                    Log.e(TAG, "Error connecting");
                     Toast.makeText(getActivity().getApplicationContext(),
                             R.string.error_connect, Toast.LENGTH_LONG).show();
                 }
@@ -453,7 +452,7 @@ public class MainFragment extends Fragment {
             if (!mTyping) return;
 
             mTyping = false;
-            mSocket.emit("ha smesso di scrivere");
+            mSocket.emit("stop typing");
         }
     };
 }
