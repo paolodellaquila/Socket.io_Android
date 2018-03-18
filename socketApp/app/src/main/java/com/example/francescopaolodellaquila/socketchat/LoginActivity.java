@@ -1,5 +1,6 @@
 package com.example.francescopaolodellaquila.socketchat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -31,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Socket mSocket;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //initialize socket
         try {
-            mSocket = IO.socket("");
+            mSocket = IO.socket("https://socket-io-chat.now.sh/");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -54,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
                     if(mPasswordView.getText().toString().equals("Fermi123")){
                         attemptLogin();
                         return true;
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Password Errata", Toast.LENGTH_SHORT).show();
                     }
                 }
                 return false;
@@ -86,6 +91,17 @@ public class LoginActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+
+        // Setting Title
+        progressDialog.setTitle("SocketChat");
+
+        // Setting Message
+        progressDialog.setMessage("Caricamento...");
+
+        progressDialog.show();
+
         // Reset errors.
         mUsernameView.setError(null);
 
@@ -105,6 +121,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // perform the user login attempt.
         mSocket.emit("add user", username);
+
+        progressDialog.dismiss();
     }
 
     private Emitter.Listener onLogin = new Emitter.Listener() {

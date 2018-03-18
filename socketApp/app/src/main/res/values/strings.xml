@@ -10,7 +10,7 @@
     <string name="error_connect">Connessione fallita</string>
 
     <!-- messages -->
-    <string name="message_welcome">Benvenuto nella Socket Chat Fermi–</string>
+    <string name="message_welcome">Benvenuto nella Socket Chat Fermi</string>
     <plurals name="message_participants">
         <item quantity="one">C\' è %d partecipante</item>
         <item quantity="other">Ci sono %d participanti</item>

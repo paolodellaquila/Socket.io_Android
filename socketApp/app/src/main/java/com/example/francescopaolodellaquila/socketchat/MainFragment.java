@@ -85,7 +85,7 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
         //initialize socket
         try {
-            mSocket = IO.socket("");
+            mSocket = IO.socket("https://socket-io-chat.now.sh/");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
